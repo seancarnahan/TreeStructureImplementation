@@ -17,13 +17,13 @@ TESTBIN_DIR = ./testbin
 
 UNAME := $(shell uname)
 
-PKGS = 
+PKGS =
 
 #DEBUG_MODE=TRUE
 ifdef DEBUG_MODE
 DEFINES  += -DDEBUG
 CFLAGS   += -g -ggdb -D_GLIBCXX_DEBUG
-else 
+else
 CFLAGS   += -O3
 endif
 
@@ -35,9 +35,9 @@ endif
 
 INCLUDE         += -I $(INC_DIR)
 CFLAGS          +=  -Wall
-LDFLAGS         += 
+LDFLAGS         +=
 TESTLDFLAGS     += -lgtest -lgtest_main  -lpthread
-CPPFLAGS        += -std=c++14 
+CPPFLAGS        += -std=c++14
 PROJ_NAME       = proj2
 TESTSTR_NAME    = teststr
 TESTPATH_NAME   = testpath
@@ -49,30 +49,30 @@ TESTTREE_OBJ    = $(OBJ_DIR)/testtree.o
 
 PROJ_OBJS       = $(OBJ_DIR)/DirectoryListing.o     \
                   $(OBJ_DIR)/FileSystemTree.o
-      
-            
-            
+
+
+
 all: directories test $(BIN_DIR)/$(PROJ_NAME)
 test: $(TESTBIN_DIR)/$(TESTTREE_NAME)
 	$(TESTBIN_DIR)/$(TESTTREE_NAME)
-	
-$(BIN_DIR)/$(PROJ_NAME): $(PROJ_OBJS) $(MAIN_OBJ)
-	$(CXX) $(MAIN_OBJ) $(PROJ_OBJS) -o $(BIN_DIR)/$(PROJ_NAME) $(CFLAGS) $(CPPFLAGS) $(DEFINES) $(LDFLAGS) 
-	
-$(TESTBIN_DIR)/$(TESTTREE_NAME): $(PROJ_OBJS) $(TESTTREE_OBJ)
-	$(CXX) $(PROJ_OBJS) $(TESTTREE_OBJ) -o $(TESTBIN_DIR)/$(TESTTREE_NAME) $(CFLAGS) $(CPPFLAGS) $(DEFINES) $(TESTLDFLAGS) 
 
-	
+$(BIN_DIR)/$(PROJ_NAME): $(PROJ_OBJS) $(MAIN_OBJ)
+	$(CXX) $(MAIN_OBJ) $(PROJ_OBJS) -o $(BIN_DIR)/$(PROJ_NAME) $(CFLAGS) $(CPPFLAGS) $(DEFINES) -L ./googletest/build/lib $(LDFLAGS)
+
+$(TESTBIN_DIR)/$(TESTTREE_NAME): $(PROJ_OBJS) $(TESTTREE_OBJ)
+	$(CXX) $(PROJ_OBJS) $(TESTTREE_OBJ) -o $(TESTBIN_DIR)/$(TESTTREE_NAME) $(CFLAGS) $(CPPFLAGS) $(DEFINES) -L ./googletest/build/lib $(TESTLDFLAGS)
+
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CFLAGS) $(CPPFLAGS) $(DEFINES) $(INCLUDE) -c $< -o $@
-	
+	$(CXX) $(CFLAGS) $(CPPFLAGS) $(DEFINES) $(INCLUDE) -I ./googletest/googletest/include -c $< -o $@
+
 .PHONY: directories
 directories:
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(TESTBIN_DIR)
-	
+
 clean::
 	-rm $(OBJ_DIR)/*.o $(INC_DIR)/*.*~ $(SRC_DIR)/*.*~
-	
+
 .PHONY: clean
