@@ -48,7 +48,9 @@ MAIN_OBJ        = $(OBJ_DIR)/main.o
 TESTTREE_OBJ    = $(OBJ_DIR)/testtree.o
 
 PROJ_OBJS       = $(OBJ_DIR)/DirectoryListing.o     \
-                  $(OBJ_DIR)/FileSystemTree.o
+                  $(OBJ_DIR)/FileSystemTree.o				\
+									$(OBJ_DIR)/CPath.o                 \
+									$(OBJ_DIR)/StringUtils.o
 
 
 

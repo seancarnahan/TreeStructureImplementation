@@ -2,22 +2,25 @@
 #include <gtest/gtest.h>
 //structures
 struct CFileSystemTree::SImplementation{
-    std::string obj = "/";
-
+    //std::weak_ptr <CFileSystemTree> pRootNode = nullptr;
 };
 
 struct CFileSystemTree::CEntry::SImplementation{
-    //std::weak_ptr parentPoint= nullptr;
-    //std::vector<int> v;
-
+    //std::weak_ptr<CFileSystemTree> pParent;
+    //std::vector <CFileSystemTree> pChildren;
+    //std::string obj;
 };
 
 struct CFileSystemTree::CEntryIterator::SImplementation{
     // You implementation here
+
+    //ask dad how to build
 };
 
 struct CFileSystemTree::CConstEntryIterator::SImplementation{
     // You implementation here
+
+    //ask dad how to build
 };
 
 
@@ -67,11 +70,6 @@ std::string CFileSystemTree::CEntry::FullPath() const{
 std::string CFileSystemTree::CEntry::ToString() const{
   return "";
 }
-
-
-
-
-
 
 //not overloading the operator -> instead you are overloading to string
 CFileSystemTree::CEntry::operator std::string() const{
@@ -293,7 +291,8 @@ CFileSystemTree &CFileSystemTree::operator=(const CFileSystemTree &tree){
 
 CFileSystemTree::CEntry &CFileSystemTree::Root(){
   std::unique_ptr<CFileSystemTree::CEntry> iterPtr = std::make_unique<CFileSystemTree::CEntry>();
-  
+
+
   return *iterPtr;
 }
 
