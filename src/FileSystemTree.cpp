@@ -1,33 +1,43 @@
 #include "FileSystemTree.h"
-#include <gtest/gtest.h>
+#include "Path.h"
 //structures
 struct CFileSystemTree::SImplementation{
-    //std::weak_ptr <CFileSystemTree> pRootNode = nullptr;
+    CEntry root;
 };
 
 struct CFileSystemTree::CEntry::SImplementation{
-    //std::weak_ptr<CFileSystemTree> pParent;
-    //std::vector <CFileSystemTree> pChildren;
-    //std::string obj;
+    std::unique_ptr<CPath> path;
+    std::weak_ptr<CEntry> parent;
+    std::vector<std::shared_ptr<CEntry>> children;
+    bool isValid = true;
 };
 
 struct CFileSystemTree::CEntryIterator::SImplementation{
     // You implementation here
 
-    //ask dad how to build
+
 };
 
 struct CFileSystemTree::CConstEntryIterator::SImplementation{
     // You implementation here
 
-    //ask dad how to build
+
 };
 
 
 
 //constructors
 CFileSystemTree::CEntry::CEntry() : DImplementation(std::make_unique< SImplementation >()){
-    // You code here
+  //DImplementation -> parentEntry.isValid = false;
+  /*
+  CEntry invalidParent;
+  invalidParent.DImplementation -> isValid = false;
+  std::shared_ptr<CEntry> sharedInvalidParent = std::make_shared<CEntry>(invalidParent);
+  DImplementation->parentPtr(sharedInvalidParent);
+  */
+
+  DImplementation -> path = std::make_unique<CPath>();
+
 }
 
 CFileSystemTree::CEntry::CEntry(const CEntry &entry) : DImplementation(std::make_unique< SImplementation >()){
@@ -51,8 +61,7 @@ CFileSystemTree::CEntry &CFileSystemTree::CEntry::operator=(const CEntry &entry)
 
 
 bool CFileSystemTree::CEntry::Valid() const{
-    // You code here
-    return true;
+    return DImplementation -> isValid;
 }
 
 std::string CFileSystemTree::CEntry::Name() const{
@@ -61,14 +70,14 @@ std::string CFileSystemTree::CEntry::Name() const{
 }
 
 std::string CFileSystemTree::CEntry::FullPath() const{
-    // You code here
-    return "";
+
+    return DImplementation->path->ToString();
 }
 
 //this method and the below method are going to do the same thing
 //the below operator just calls this method
 std::string CFileSystemTree::CEntry::ToString() const{
-  return "";
+  return this -> FullPath();
 }
 
 //not overloading the operator -> instead you are overloading to string
@@ -94,8 +103,25 @@ bool CFileSystemTree::CEntry::SetChild(const std::string &name, CEntryIterator &
 }
 
 bool CFileSystemTree::CEntry::AddChild(const std::string &path, bool addall){
-    // You code here
-    return true;
+    auto sharedParent = std::make_shared<CEntry>(*this);
+    if (!addall) {
+        //do nothing if child exists
+        bool alreadyAdded = false;
+        for (auto child : DImplementation -> children) {
+          if (child->DImplementation->path->BaseName() == path) {
+            alreadyAdded = true;
+          }
+        }
+        if (!alreadyAdded) {
+          CEntry newChild;
+          newChild.DImplementation->path = new CPath(path);
+          newChild.DImplementation->parent = sharedParent;
+          DImplementation->children.push_back(std::make_shared<CEntry>(newChild);
+        }
+        return !alreadyAdded;
+    } else {
+      return false;
+    }
 }
 
 bool CFileSystemTree::CEntry::RemoveChild(const std::string &path){
@@ -116,7 +142,6 @@ bool CFileSystemTree::CEntry::GetData(std::vector< char > &data) const{
 
 CFileSystemTree::CEntry &CFileSystemTree::CEntry::Parent(){
     return *this;
-
 }
 
 const CFileSystemTree::CEntry &CFileSystemTree::CEntry::Parent() const{
@@ -273,7 +298,9 @@ const CFileSystemTree::CEntry *CFileSystemTree::CConstEntryIterator::operator->(
 
 //constructors for CFileSystemTree
 CFileSystemTree::CFileSystemTree() : DImplementation(std::make_unique< SImplementation >()){
-    // You code here
+  auto rootParent = std::make_shared<CEntry>();
+  rootParent->DImplementation->isValid = false;
+  DImplementation->root.DImplementation->parent = rootParent;
 }
 
 CFileSystemTree::CFileSystemTree(const CFileSystemTree &tree) : DImplementation(std::make_unique< SImplementation >()){
@@ -289,20 +316,18 @@ CFileSystemTree &CFileSystemTree::operator=(const CFileSystemTree &tree){
     return *this;
 }
 
+//return the root CEntry of this tree
 CFileSystemTree::CEntry &CFileSystemTree::Root(){
-  std::unique_ptr<CFileSystemTree::CEntry> iterPtr = std::make_unique<CFileSystemTree::CEntry>();
-
-
-  return *iterPtr;
+  return DImplementation ->root;
 }
 
+//return the root CEntry of this tree
 const CFileSystemTree::CEntry &CFileSystemTree::Root() const{
-  std::unique_ptr<CFileSystemTree::CEntry> iterPtr = std::make_unique<CFileSystemTree::CEntry>();
-  return *iterPtr;
+  return DImplementation ->root;
 }
 
 std::string CFileSystemTree::ToString() const{
-    return "";
+    return DImplementation->root.ToString();
 }
 
 CFileSystemTree::operator std::string() const{
