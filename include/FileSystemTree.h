@@ -34,6 +34,7 @@ class CFileSystemTree{
                 std::string FullPath() const;
 
                 std::string ToString() const;
+                std::string ToString(const std::string padding) const;
                 operator std::string() const;
 
                 bool Rename(const std::string &name);

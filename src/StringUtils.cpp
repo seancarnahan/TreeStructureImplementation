@@ -91,17 +91,13 @@ std::string RStrip(const std::string &str){
   std::string strippedString;
   int numOfSpaces = 0;
   for (int i = str.length(); i >= 0; i--) {
-    if ( !isalpha(str[i])) {
+    if ( isspace(str[i]) ) {
       numOfSpaces += 1;
     } else {
       break;
     }
   }
-
-  for(int i = 0; i < (str.length() - numOfSpaces + 1); i++) {
-    strippedString += str[i];
-  }
-  return strippedString;
+  return str.substr(0, (str.length() - (numOfSpaces + 1)));
 }
 
 std::string Strip(const std::string &str){
