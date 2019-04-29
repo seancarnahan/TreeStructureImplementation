@@ -30,6 +30,7 @@ class CFileSystemTree{
                 CEntry &operator=(const CEntry &entry);
 
                 bool Valid() const;
+                bool isRoot() const;
                 std::string Name() const;
                 std::string FullPath() const;
 
