@@ -51,7 +51,7 @@ PROJ_OBJS       = $(OBJ_DIR)/DirectoryListing.o     \
                   $(OBJ_DIR)/FileSystemTree.o				\
 									$(OBJ_DIR)/CPath.o                 \
 									$(OBJ_DIR)/StringUtils.o
-
+      
 
 
 all: directories test $(BIN_DIR)/$(PROJ_NAME)
@@ -59,14 +59,14 @@ test: $(TESTBIN_DIR)/$(TESTTREE_NAME)
 	$(TESTBIN_DIR)/$(TESTTREE_NAME)
 
 $(BIN_DIR)/$(PROJ_NAME): $(PROJ_OBJS) $(MAIN_OBJ)
-	$(CXX) $(MAIN_OBJ) $(PROJ_OBJS) -o $(BIN_DIR)/$(PROJ_NAME) $(CFLAGS) $(CPPFLAGS) $(DEFINES) -L ./googletest/build/lib $(LDFLAGS)
+	$(CXX) $(MAIN_OBJ) $(PROJ_OBJS) -o $(BIN_DIR)/$(PROJ_NAME) $(CFLAGS) $(CPPFLAGS) $(DEFINES) $(LDFLAGS)
 
 $(TESTBIN_DIR)/$(TESTTREE_NAME): $(PROJ_OBJS) $(TESTTREE_OBJ)
-	$(CXX) $(PROJ_OBJS) $(TESTTREE_OBJ) -o $(TESTBIN_DIR)/$(TESTTREE_NAME) $(CFLAGS) $(CPPFLAGS) $(DEFINES) -L ./googletest/build/lib $(TESTLDFLAGS)
+	$(CXX) $(PROJ_OBJS) $(TESTTREE_OBJ) -o $(TESTBIN_DIR)/$(TESTTREE_NAME) $(CFLAGS) $(CPPFLAGS) $(DEFINES) $(TESTLDFLAGS)
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CFLAGS) $(CPPFLAGS) $(DEFINES) $(INCLUDE) -I ./googletest/googletest/include -c $< -o $@
+	$(CXX) $(CFLAGS) $(CPPFLAGS) $(DEFINES) $(INCLUDE) -c $< -o $@
 
 .PHONY: directories
 directories:
