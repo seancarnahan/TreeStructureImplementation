@@ -3,6 +3,7 @@
 #include "StringUtils.h"
 #include <iostream>
 #include <memory>
+#include <algorithm>
 
 /**
  * Struct definition for the Tree
@@ -198,16 +199,16 @@ std::string CFileSystemTree::CEntry::ToString(const std::string padding) const{
 
       //add the padding to the buffer
       if (padding.length() > 0) {
-	buffer += padding;
+	       buffer += padding;
       }
 
       //recursively call this method on each child and add more padding
       if (childCounter > 0) {
-	buffer += "|--";
-	buffer += child->ToString(padding + "|  ");
+	       buffer += "|--";
+	        buffer += child->ToString(padding + "|  ");
       } else {
-	buffer += "`--";
-	buffer += child->ToString(padding + "   ");
+	       buffer += "`--";
+	        buffer += child->ToString(padding + "   ");
       }
 
     }
@@ -538,9 +539,6 @@ CFileSystemTree::CEntryIterator CFileSystemTree::CEntry::Find(const std::string 
   return iter;
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::CEntry::Find(const std::string &name) const{
 
   return CConstEntryIterator();
@@ -556,16 +554,10 @@ CFileSystemTree::CEntryIterator CFileSystemTree::CEntry::begin(){
   return iter;
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::CEntry::begin() const{
   return CConstEntryIterator();
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::CEntry::cbegin() const{
   return CConstEntryIterator();
 }
@@ -580,16 +572,10 @@ CFileSystemTree::CEntryIterator CFileSystemTree::CEntry::end(){
   return iter;
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::CEntry::end() const{
   return CConstEntryIterator();
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::CEntry::cend() const{
   return CConstEntryIterator();
 }
@@ -682,11 +668,7 @@ CFileSystemTree::CEntryIterator CFileSystemTree::CEntryIterator::operator--(int 
   return *this;
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CEntry &CFileSystemTree::CEntryIterator::operator*() const{
-    // You code here
   std::unique_ptr<CFileSystemTree::CEntry> entryPtr = std::make_unique<CFileSystemTree::CEntry>();
   return *entryPtr;
 }
@@ -698,62 +680,36 @@ CFileSystemTree::CEntry *CFileSystemTree::CEntryIterator::operator->() const{
   return DImplementation->children.at(DImplementation->currentChildIdx).get();
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator::CConstEntryIterator() : DImplementation(std::make_unique< SImplementation >()){
 
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator::CConstEntryIterator(const CConstEntryIterator &iter) : DImplementation(std::make_unique< SImplementation >()){
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator::CConstEntryIterator(const CEntryIterator &iter) : DImplementation(std::make_unique< SImplementation >()){
 }
 
-/**
- * TODO: Not Implemented
- */
+
 CFileSystemTree::CConstEntryIterator::~CConstEntryIterator(){
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator& CFileSystemTree::CConstEntryIterator::operator=(const CConstEntryIterator &iter){
  return *this;
 }
 
-/**
- * TODO: Not Implemented
- */
 bool CFileSystemTree::CConstEntryIterator::operator==(const CConstEntryIterator &iter) const{
   return true;
 }
 
-/**
- * TODO: Not Implemented
- */
 bool CFileSystemTree::CConstEntryIterator::operator!=(const CConstEntryIterator &iter) const{
   return true;
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator& CFileSystemTree::CConstEntryIterator::operator++(){
   return *this;
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::CConstEntryIterator::operator++(int){
   return *this;
 }
@@ -765,24 +721,15 @@ CFileSystemTree::CConstEntryIterator& CFileSystemTree::CConstEntryIterator::oper
   return *this;
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::CConstEntryIterator::operator--(int){
   return *this;
 }
 
-/**
- * TODO: Not Implemented
- */
 const CFileSystemTree::CEntry &CFileSystemTree::CConstEntryIterator::operator*() const{
   std::unique_ptr<CFileSystemTree::CEntry> entryPtr = std::make_unique<CFileSystemTree::CEntry>();
   return *entryPtr;
 }
 
-/**
- * TODO: Not Implemented
- */
 const CFileSystemTree::CEntry *CFileSystemTree::CConstEntryIterator::operator->() const{
   CFileSystemTree::CEntry *newEntry = new CFileSystemTree::CEntry();
   return newEntry;
@@ -808,24 +755,14 @@ CFileSystemTree::CFileSystemTree() : DImplementation(std::make_unique< SImplemen
   } else {
     std::cout << "  *************** ERROR: UNABLE TO SET ISVALID TO FALSE\n";
   }
-
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CFileSystemTree(const CFileSystemTree &tree) : DImplementation(std::make_unique< SImplementation >()){
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::~CFileSystemTree(){
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree &CFileSystemTree::operator=(const CFileSystemTree &tree){
   return *this;
 }
@@ -866,9 +803,6 @@ CFileSystemTree::CEntryIterator CFileSystemTree::Find(const std::string &path){
   return Root().Find(path);
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::Find(const std::string &path) const{
   return CConstEntryIterator();
 }
@@ -881,9 +815,6 @@ CFileSystemTree::CEntryIterator CFileSystemTree::NotFound(){
   return DImplementation->NOT_FOUND_ITER;
 }
 
-/**
- * TODO: Not Implemented
- */
 CFileSystemTree::CConstEntryIterator CFileSystemTree::NotFound() const{
   return CConstEntryIterator();
 }
